@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# CODDUO-OS - Sistema Operacional Minimalista
-# Versão: 1.0
-# Desenvolvido para máxima simplicidade e performance
+# CODDUO-OS - Sistema operacional
+
 
 # Configurações
 CODDUO_HOME="/opt/codduo"
@@ -26,24 +25,24 @@ log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
 }
 
-# Função para capturar teclas especiais
+# Função pro menu
 get_key() {
     local key
     IFS= read -rsn1 key 2>/dev/null
     
-    # Verificar se é Enter (LF ou CR)
+    # Verificar se é Enter (LF ou CR) [ENTER NÃO FUNCIONANDO]
     if [[ $key = $'\x0a' ]] || [[ $key = $'\x0d' ]]; then
         echo enter
         return 0
     fi
     
-    # Verificar se é ESC (início de sequência de escape)
+    
     if [[ $key = $'\x1b' ]]; then
-        # Ler próximo caractere sem timeout para verificar se é sequência de seta
+       
         local key2
         if IFS= read -rsn1 -t 0.001 key2 2>/dev/null; then
             if [[ $key2 = '[' ]]; then
-                # É uma sequência de seta, ler o terceiro caractere
+               
                 local key3
                 if IFS= read -rsn1 -t 0.001 key3 2>/dev/null; then
                     case $key3 in
@@ -60,7 +59,7 @@ get_key() {
                 echo esc
             fi
         else
-            # Timeout ou erro, é apenas ESC
+            
             echo esc
         fi
         return 0
@@ -70,7 +69,7 @@ get_key() {
     echo "$key"
 }
 
-# Função para menu interativo com setas
+
 interactive_menu() {
     local title="$1"
     local -n options_ref=$2
@@ -91,7 +90,7 @@ interactive_menu() {
         echo -e "${PURPLE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo
         
-        # Mostrar opções
+
         for i in "${!options_ref[@]}"; do
             local prefix="  "
             local suffix=""
@@ -110,7 +109,7 @@ interactive_menu() {
         echo -e "${PURPLE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo -e "${YELLOW}Use ↑/↓ para navegar, Enter/Espaço para selecionar, Esc para sair${NC}"
         
-        # Capturar tecla
+     
         local key
         key=$(get_key)
         
@@ -133,7 +132,7 @@ interactive_menu() {
                 return $selected
                 ;;
             esc)
-                # Mostrar cursor novamente
+               
                 echo -ne "\033[?25h"
                 return 255
                 ;;
@@ -141,13 +140,13 @@ interactive_menu() {
     done
 }
 
-# Função para limpar tela
+
 clear_screen() {
     clear
     echo
 }
 
-# Função para mostrar ASCII art
+
 show_logo() {
     echo -e "${PURPLE}${BOLD}"
     echo "  ██████╗ ██████╗ ██████╗ ██████╗ ██╗   ██╗ ██████╗ "
@@ -163,7 +162,7 @@ show_logo() {
     echo
 }
 
-# Função para mostrar menu principal interativo
+# Função para mostrar menu
 show_main_menu() {
     local main_options=("Iniciar Aplicação" "Adicionar Aplicação" "Remover Aplicação" "Terminal" "Configurações" "Sair")
     local main_descriptions=("Executar aplicação" "Baixar nova aplicação" "Remover aplicação" "Terminal do sistema" "Configurações" "Encerrar sistema")
@@ -172,7 +171,7 @@ show_main_menu() {
     return $?
 }
 
-# Função para listar aplicações instaladas
+# Função para listar aplicações
 list_apps() {
     echo -e "${YELLOW}Aplicações Instaladas:${NC}"
     echo
@@ -235,7 +234,7 @@ EOF
     echo "$xinitrc_path"
 }
 
-# Função para iniciar aplicação
+
 start_app() {
     # Verificar se há aplicações instaladas
     if [ ! -d "$APPS_DIR" ] || [ -z "$(ls -A $APPS_DIR 2>/dev/null)" ]; then
@@ -251,7 +250,7 @@ start_app() {
         return
     fi
     
-    # Criar arrays para aplicações
+   
     local app_options=()
     local app_descriptions=()
     local app_paths=()
@@ -267,7 +266,7 @@ start_app() {
         fi
     done
     
-    # Adicionar opção para voltar
+
     app_options+=("Voltar")
     app_descriptions+=("Voltar ao menu principal")
     
