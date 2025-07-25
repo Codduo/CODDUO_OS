@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Script para corrigir o arquivo GRUB malformado
+# SCRIPT DE INSTALAÇÃO DO CODDUO OS
 
-echo "🔧 Corrigindo arquivo GRUB malformado..."
+echo "🔧 Corrigindo arquivo GRUB antes da instalação..."
 
-# Fazer backup
 cp grub/grub.cfg grub/grub.cfg.backup
 
-# Recriar o arquivo GRUB corretamente
+# arruma o grub
 cat > grub/grub.cfg << 'EOF'
 # Load partition table and file system modules
 insmod part_gpt
@@ -124,8 +123,8 @@ menuentry 'System restart' --class reboot --class restart {
 play 600 988 1 1319 4
 EOF
 
-echo "✅ Arquivo GRUB corrigido!"
+echo "✅ Arquivo GRUB corrigido! prosseguindo para instalação..."
 
-# Agora gerar a ISO
-echo "📦 Gerando ISO..."
+
+echo "Gerando ISO... (Processo pode demorar até 25+ minutos)"
 sudo mkarchiso -v -w /tmp/archiso-tmp -o out/ ./
