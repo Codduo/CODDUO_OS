@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Check if we're on tty1 and haven't shown the welcome message yet
-if [[ $(tty) == "/dev/tty1" ]] && [[ ! -f /tmp/codduo-welcome-shown ]]; then
-    # Clear screen and show welcome message
+if [[ $(tty) == "/dev/tty1" ]] && [[ ! -f /tmp/codduo-welcome-shown ]]; then #Verifica se foi mandado a mensagem do TTT1 antes de dar boot
     clear
     echo -e "\033[35m  ██████╗ ██████╗ ██████╗ ██████╗ ██╗   ██╗ ██████╗ "
     echo -e "██╔════╝██╔═══██╗██╔══██╗██╔══██╗██║   ██║██╔═══██╗"
@@ -23,6 +21,5 @@ if [[ $(tty) == "/dev/tty1" ]] && [[ ! -f /tmp/codduo-welcome-shown ]]; then
     echo -e "\033[35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo ""
     
-    # Mark that we've shown the welcome message
     touch /tmp/codduo-welcome-shown
 fi
